@@ -32,7 +32,9 @@ function GameBoard() {
 function Cell() {
   let value = 0;
 
-  const getValue = () => value;
+  const getValue = () => {
+    value
+  };
 
   const setValue = (newValue) => {
     value = newValue;
@@ -49,7 +51,7 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
 
   const players = [
     { name: playerOneName, token: "X" },
-    { name: playerOneName, token: "O" },
+    { name: playerTwoName, token: "O" },
   ];
 
   let activePlayer = players[0];
