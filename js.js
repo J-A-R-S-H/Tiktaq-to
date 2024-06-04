@@ -44,9 +44,44 @@ function Cell() {
   };
 }
 
-const gameBoard = GameBoard();
-gameBoard.printBoard();
-gameBoard.dropToken(0, 1, "X"); // Test dropping a token in column 0 for player 'X'
-gameBoard.printBoard();
-gameBoard.dropToken(0, 2, "O"); // Test dropping a token in column 0 for player 'X'
-gameBoard.printBoard();
+function GameController(playerOneName = "P1", playerTwoName = "P2") {
+  const gameBoard = GameBoard();
+
+  const players = [
+    { name: playerOneName, token: "X" },
+    { name: playerOneName, token: "O" },
+  ];
+
+  let activePlayer = players[0];
+
+  const switchPlayerTurn = () => {
+    activePlayer = activePlayer === players[0] ? players[1] : players[0];
+  };
+
+  const getActivePlayer = () => activePlayer;
+
+  const printNewRound = () => {
+    gameBoard.printBoard();
+    gameBoard.dropToken(0, 1, players[0].token); // Test dropping a token in column 0 for player 'X'
+    gameBoard.printBoard();
+    gameBoard.dropToken(0, 2, "O"); // Test dropping a token in column 0 for player 'X'
+    gameBoard.printBoard();
+    console.log(`${getActivePlayer().name}'s turn.`);
+  };
+
+  const playRound = (row, column) => {
+    console.log(`Dropping ${getActivePlayer().name}'s token...`);
+    board.dropToken(row, column, getActivePlayer().token);
+
+    switchPlayerTurn();
+    printNewRound();
+  };
+  printNewRound();
+
+  return {
+    playRound,
+    getActivePlayer,
+  };
+}
+
+const game = GameController();
