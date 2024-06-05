@@ -32,9 +32,7 @@ function GameBoard() {
 function Cell() {
   let value = 0;
 
-  const getValue = () => {
-    value
-  };
+  const getValue = () => value;
 
   const setValue = (newValue) => {
     value = newValue;
@@ -68,7 +66,17 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
     gameBoard.printBoard();
     gameBoard.dropToken(0, 2, "O"); // Test dropping a token in column 0 for player 'X'
     gameBoard.printBoard();
+
+    gameBoard.dropToken(1, 2, "O");
+    gameBoard.dropToken(1, 1, "O");
+    gameBoard.dropToken(1, 0, "O");
+    gameBoard.printBoard();
+
     console.log(`${getActivePlayer().name}'s turn.`);
+
+    console.log("Checking for winner...");
+    const winner = checkWinner(gameBoard.getBoard());
+    console.log("Winner:", winner);
   };
 
   const playRound = (row, column) => {
@@ -78,6 +86,22 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
     switchPlayerTurn();
     printNewRound();
   };
+
+  const checkWinner = (board) => {
+    for (let i = 0; i < 3; i++) {
+      if (
+        board[i][0].getValue() !== 0 &&
+        board[i][0].getValue() === board[i][1].getValue() &&
+        board[i][0].getValue() === board[i][2].getValue()
+      ) {
+        console.log("We got a winner!");
+        return true;
+      } else {
+        console.log("Else Statement");
+      }
+    }
+  };
+
   printNewRound();
 
   return {
