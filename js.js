@@ -70,6 +70,8 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
     gameBoard.dropToken(1, 2, "O");
     gameBoard.dropToken(1, 1, "O");
     gameBoard.dropToken(1, 0, "O");
+    gameBoard.dropToken(2, 2, "O");
+
     gameBoard.printBoard();
 
     console.log(`${getActivePlayer().name}'s turn.`);
@@ -95,10 +97,35 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
         board[i][0].getValue() === board[i][2].getValue()
       ) {
         console.log("We got a winner!");
-        return true;
-      } else {
-        console.log("Else Statement");
+        // return "true";
+        // remove this for now so it doesent terminate the for loop early
       }
+    }
+
+    for (let i = 0; i < 3; i++) {
+      console.log(board[i][0].getValue(), "bad romance");
+
+      if (
+        board[i][0].getValue() !== 0 ||
+        board[i][1].getValue() !== 0 ||
+        board[i][2].getValue() !== 0
+      ) {
+        console.log("We got a winner Vertically!");
+        // return "true";
+        // remove this for now so it doesent terminate the for loop early
+      }
+    }
+
+    console.log(board, "the biggest boawgghhh");
+    if (
+      (board[0][0].getValue() != 0 &&
+        board[1][1].getValue() != 0 &&
+        board[2][2].getValue() != 0) ||
+      (board[2][0].getValue() != 0 &&
+        board[1][1].getValue() != 0 &&
+        board[0][2].getValue() != 0)
+    ) {
+      console.log("We got a winner Diagnolly!");
     }
   };
 
