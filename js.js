@@ -71,6 +71,10 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
     gameBoard.dropToken(1, 1, "O");
     gameBoard.dropToken(1, 0, "O");
     gameBoard.dropToken(2, 2, "O");
+    gameBoard.dropToken(0, 0, "O");
+    gameBoard.dropToken(2, 0, "O");
+    gameBoard.dropToken(2, 1, "O");
+
 
     gameBoard.printBoard();
 
@@ -127,6 +131,27 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
     ) {
       console.log("We got a winner Diagnolly!");
     }
+
+
+    let tieValue = 0;
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+
+        console.log(tieValue, "Tie value")
+        if (board[i][j].getValue() != 0) {
+          tieValue++
+          console.log("Tie Value", tieValue)
+          if (tieValue == 9) {
+            console.log("It's a Tie ye")
+          }
+
+        }
+      }
+    }
+
+
+
   };
 
   printNewRound();
