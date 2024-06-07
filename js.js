@@ -81,7 +81,7 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
     console.log(`${getActivePlayer().name}'s turn.`);
 
     console.log("Checking for winner...");
-    const winner = checkWinner(gameBoard.getBoard());
+    const winner = checkWinner(gameBoard.getBoard(), getActivePlayer().token);
     console.log("Winner:", winner);
   };
 
@@ -93,14 +93,18 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
     printNewRound();
   };
 
-  const checkWinner = (board) => {
+  const checkWinner = (board, activePlayer) => {
+
+    console.log("activeplayer", activePlayer)
     for (let i = 0; i < 3; i++) {
+      boardRow = board[i][0].getValue()
+
       if (
         board[i][0].getValue() !== 0 &&
         board[i][0].getValue() === board[i][1].getValue() &&
         board[i][0].getValue() === board[i][2].getValue()
       ) {
-        console.log("We got a winner!");
+        console.log(activePlayer, "We got a winner!");
         // return "true";
         // remove this for now so it doesent terminate the for loop early
       }
@@ -114,7 +118,7 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
         board[i][1].getValue() !== 0 ||
         board[i][2].getValue() !== 0
       ) {
-        console.log("We got a winner Vertically!");
+        console.log(activePlayer, "We got a winner Vertically!");
         // return "true";
         // remove this for now so it doesent terminate the for loop early
       }
