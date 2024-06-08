@@ -11,3 +11,8 @@ button {
     width: 100px;
 
 }
+
+.board {
+    grid-template-columns: 1fr 1fr 1fr;
+    display: grid;
+}

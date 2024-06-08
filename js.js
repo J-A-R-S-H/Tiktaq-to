@@ -163,6 +163,7 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
   return {
     playRound,
     getActivePlayer,
+    getBoard: gameBoard.getBoard
   };
 }
 
@@ -180,15 +181,20 @@ function ScreenController() {
   const board = game.getBoard()
   const activePlayer = game.getActivePlayer()
 
+
   playerDiv.textContent = `${activePlayer.name} Turn`
   board.forEach(row => {
     row.forEach((cell, index) => {
       const ticButton = document.createElement("button");
       ticButton.classList.add("cell")
-      // cellButton.dataset
-      cellButton.textContent = cell.getValue();
-      boardDiv.appendChild(cellButton);
+      ticButton.dataset.column = index
+      ticButton.dataset.row = index
+      ticButton.textContent = cell.getValue();
+      boardDiv.appendChild(ticButton);
+      console.log("index", index)
 
     })
   })
 }
+
+ScreenController();
