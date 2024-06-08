@@ -166,4 +166,29 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
   };
 }
 
-const game = GameController();
+
+
+function ScreenController() {
+  const game = GameController();
+  const playerDiv = document.querySelector(".turn")
+  const boardDiv = document.querySelector(".board")
+
+  const updateScreen = () => {
+    boardDiv.textContent = ""
+  }
+
+  const board = game.getBoard()
+  const activePlayer = game.getActivePlayer()
+
+  playerDiv.textContent = `${activePlayer.name} Turn`
+  board.forEach(row => {
+    row.forEach((cell, index) => {
+      const ticButton = document.createElement("button");
+      ticButton.classList.add("cell")
+      // cellButton.dataset
+      cellButton.textContent = cell.getValue();
+      boardDiv.appendChild(cellButton);
+
+    })
+  })
+}
