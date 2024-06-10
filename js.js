@@ -2,22 +2,22 @@ function GameBoard() {
   const rowsAndCols = 3;
   const board = [];
 
-  for (let i = 0; i < rowsAndCols; i++) {
-    board[i] = [];
-    for (let j = 0; j < rowsAndCols; j++) {
-      board[i].push(Cell());
+  const initialize = () => {
+    for (let i = 0; i < rowsAndCols; i++) {
+      board[i] = [];
+      for (let j = 0; j < rowsAndCols; j++) {
+        board[i].push(Cell());
+      }
     }
   }
+
+  initialize()
 
   const getBoard = () => board;
 
   const dropToken = (row, column, player) => {
-    if (board[row][column].getValue() === 0) {
-      board[row][column].setValue(player);
-      console.log(`Token '${player}' dropped at (${row}, ${column}).`);
-    } else {
-      console.log(`Cell (${row}, ${column}) is already occupied.`);
-    }
+    board[row][column].setValue(player);
+
   };
 
   const printBoard = () => {
@@ -26,7 +26,7 @@ function GameBoard() {
     );
     console.log(boardWithCellValues);
   };
-  return { printBoard, getBoard, dropToken };
+  return { printBoard, getBoard, dropToken, initialize };
 }
 
 function Cell() {
@@ -64,27 +64,34 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
     gameBoard.printBoard();
 
 
-    console.log(`${getActivePlayer().name}'s turn.`);
-
-    console.log("Checking for winner...");
-    console.log("Winner:", winner);
+    if (winner === true) {
+      alert(`${getActivePlayer().name} won`);
+      gameBoard.initialize()
+    } else if (winner === "Draw") {
+      alert("Draw")
+      gameBoard.initialize()
+    }
 
   };
 
   const playRound = (row, column) => {
-    console.log(`Dropping ${getActivePlayer().name}'s token...`);
 
-    gameBoard.dropToken(row, column, getActivePlayer().token);
+    const cellValue = gameBoard.getBoard()[row][column].getValue();
 
-    const winner = checkWinner(gameBoard.getBoard(), getActivePlayer().token);
+    if (cellValue === 0) {
+      gameBoard.dropToken(row, column, getActivePlayer().token);
+
+      const winner = checkWinner(gameBoard.getBoard(), getActivePlayer().token);
+
+      console.log("something winner", winner)
 
 
+      if (winner === true || winner === "Draw") {
+        printNewRound(winner);
+      } else if (winner === false) {
+        switchPlayerTurn();
+      }
 
-    console.log("something winner", winner)
-    if (winner === true) {
-      printNewRound(winner);
-    } else {
-      switchPlayerTurn();
     }
   };
 
@@ -99,8 +106,8 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
         board[i][0].getValue() === board[i][1].getValue() &&
         board[i][0].getValue() === board[i][2].getValue() ||
         board[0][i].getValue() !== 0 &&
-        board[1][i].getValue() &&
-        board[2][i].getValue()
+        board[1][i].getValue() === board[0][i].getValue() &&
+        board[2][i].getValue() === board[1][i].getValue()
       ) {
         return true
       }
@@ -108,34 +115,31 @@ function GameController(playerOneName = "P1", playerTwoName = "P2") {
 
     if (
       (board[0][0].getValue() != 0 &&
-        board[1][1].getValue() != 0 &&
-        board[2][2].getValue() != 0) ||
+        board[1][1].getValue() === board[0][0].getValue() &&
+        board[2][2].getValue() === board[1][1].getValue()) ||
       (board[2][0].getValue() != 0 &&
-        board[1][1].getValue() != 0 &&
-        board[0][2].getValue() != 0)
+        board[1][1].getValue() === board[2][0].getValue() &&
+        board[0][2].getValue() === board[1][1].getValue())
     ) {
       return true
-      //diagonal check
     }
 
     let tieValue = 0;
     for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
 
-        console.log(tieValue, "Tie value")
-        if (board[i][j].getValue() != 0) {
-          tieValue++
-          if (tieValue == 9) {
-            return true
-          }
+      for (let j = 0; j < 3; j++) {
+        if (board[i][j].getValue() !== 0) {
+          tieValue++;
+          console.log(tieValue, "Tie value")
 
         }
       }
     }
+    if (tieValue === 9) {
+      return "Draw";
+    }
 
     return false
-
-
   };
 
   printNewRound();
@@ -186,8 +190,6 @@ function ScreenController() {
       console.log("no")
       return
     }
-
-
 
     game.playRound(selectedRow, selectedColumn);
     updateScreen();
